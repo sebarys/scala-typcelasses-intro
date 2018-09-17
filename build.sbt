@@ -5,10 +5,6 @@ version := "0.1.0"
 
 val catsVersion = "1.1.0"
 
-// Want to use a published library in your project?
-// You can define other libraries as dependencies in your build like this:
-libraryDependencies += "org.typelevel" %% "cats-core" % "1.1.0"
-
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-core" % catsVersion,
 
@@ -22,4 +18,5 @@ scalacOptions ++= Seq(
   "-language:higherKinds",
   "-explaintypes", // Explain type errors in more detail.
   "-deprecation", // Emit warning and location for usages of deprecated APIs.
+  "-feature"
 )
