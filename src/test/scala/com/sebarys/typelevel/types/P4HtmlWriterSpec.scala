@@ -75,15 +75,28 @@ class P4HtmlWriterSpec extends FlatSpec with Matchers {
   case class Paragraph[A: HtmlWriter](nestedComponents: List[A])
 
   implicit def listHtmlWriter[A: HtmlWriter] = new HtmlWriter[List[A]] {
-    override def asHtml(value: List[A]): String = ???
+    override def asHtml(value: List[A]): String = {
+      import HtmlWriter._
+      val sb = new StringBuilder()
+      sb.append("[\n")
+      value.foreach(elem => sb.append(elem.asHtml() + "\n"))
+      sb.append("]")
+      sb.toString()
+    }
   }
 
   implicit def boldHtmlWriter[A: HtmlWriter] = new HtmlWriter[Bold[A]] {
-    override def asHtml(value: Bold[A]): String = ???
+    override def asHtml(value: Bold[A]): String = {
+      import HtmlWriter._
+      s"<b>${value.nestedComponents.asHtml()}</b>"
+    }
   }
 
   implicit def paragraphHtmlWriter[A: HtmlWriter] = new HtmlWriter[Paragraph[A]] {
-    override def asHtml(value: Paragraph[A]): String = ???
+    override def asHtml(value: Paragraph[A]): String = {
+      import HtmlWriter._
+      s"<p>${value.nestedComponents.asHtml()}</p>"
+    }
   }
 
   it should "allow to use defined impl of HtmlWriter in Bold component" in {
