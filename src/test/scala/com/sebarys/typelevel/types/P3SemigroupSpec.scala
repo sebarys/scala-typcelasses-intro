@@ -39,6 +39,7 @@ class P3SemigroupSpec extends FlatSpec with Matchers {
     * Exercise 1: Implement Semigroup for Map[A,B]
     */
   implicit def mapValueAdditionSemigroup[A, B: Semigroup] = new Semigroup[Map[A, B]] {
+
     import Semigroup._
 
     def optionCombine[B: Semigroup](x: B, maybeY: Option[B]): B =
@@ -72,7 +73,10 @@ class P3SemigroupSpec extends FlatSpec with Matchers {
   case class Order(items: Map[String, Int])
 
   implicit val orderAdditionSemigroup = new Semigroup[Order] {
-    override def combine(x: Order, y: Order): Order = ???
+    override def combine(x: Order, y: Order): Order = {
+      import Semigroup._
+      Order(x.items combine y.items)
+    }
   }
 
   it should "allow for combine custom types and reuse existing combine implementations" in {
