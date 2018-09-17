@@ -27,11 +27,14 @@ class P4HtmlWriterSpec extends FlatSpec with Matchers {
   case class User(name: String, email: Email, password: String)
 
   implicit val emailHtmlWriter = new HtmlWriter[Email] {
-    override def asHtml(value: Email): String = ???
+    override def asHtml(value: Email): String = value.address.replaceAll("@", " at ")
   }
 
   implicit val userHtmlWriter = new HtmlWriter[User] {
-    override def asHtml(value: User): String = ???
+
+    import HtmlWriter._
+
+    override def asHtml(value: User): String = s"${value.name.toUpperCase}, mail: ${value.email.asHtml()}, password: ***"
   }
 
   behavior of "html writer"
