@@ -9,7 +9,7 @@ class P1TypesConstructorSpec extends FlatSpec with Matchers {
 
     //we have generic type Maybe and by providing concrete type to type constructor we receive concrete kind of Maybe
     //our generic type is just a context to which we provide our concrete type
-    
+
     val justInt: Just[Int] = new Just(4)
     val emptyInt: Empty[Int] = new Empty[Int]()
 
