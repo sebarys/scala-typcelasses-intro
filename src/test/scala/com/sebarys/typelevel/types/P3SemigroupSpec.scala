@@ -39,14 +39,18 @@ class P3SemigroupSpec extends FlatSpec with Matchers {
     * Exercise 1: Implement Semigroup for Map[A,B]
     */
   implicit def mapValueAdditionSemigroup[A, B: Semigroup] = new Semigroup[Map[A, B]] {
-
     import Semigroup._
 
-    //if maybeY is present combine it with x, otherwise return x
-    def optionCombine[B: Semigroup](x: B, maybeY: Option[B]): B = ???
+    def optionCombine[B: Semigroup](x: B, maybeY: Option[B]): B =
+      maybeY.map(x.combine(_)).getOrElse(x)
 
-    // hint: we can accumulate results using foldLeft with initial value
-    override def combine(firstMap: Map[A, B], secondMap: Map[A, B]): Map[A, B] = ???
+    override def combine(firstMap: Map[A, B], secondMap: Map[A, B]): Map[A, B] = {
+      //we fold x map with y map as initial value
+      firstMap.foldLeft(secondMap) {
+        //for each key try to get value from init map and combine them
+        case (acc, (firstMapKey, value)) => acc.updated(firstMapKey, optionCombine(value, acc.get(firstMapKey)))
+      }
+    }
   }
 
   it should "allow for combine map when values type provide instance of semigroup" in {
