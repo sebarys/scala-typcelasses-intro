@@ -106,7 +106,9 @@ class P1FunctionsSpec extends FlatSpec with Matchers {
 
     //given
     // implement function that takes two functions and compose them
-    def andThen(f1: Int => Double, f2: Double => String): Int => String = ???
+    def andThen(f1: Int => Double, f2: Double => String): Int => String = {
+      a: Int => f2(f1(a))
+    }
 
     val doubleValue: Int => Double = (x: Int) => x * 2D
     val toResult: Double => String = (x: Double) => s"Result is $x"
